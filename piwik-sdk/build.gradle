@@ -35,12 +35,18 @@ ext {
 }
 
 android {
-    compileSdkVersion project.ext.globalCompileSdkVersion
-    buildToolsVersion project.ext.globalBuildToolsVersion
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    //modify to refer to root build.gradle that refer to a global properties file
+    //compileSdkVersion project.ext.compileSdkVersion
+    //buildToolsVersion project.ext.globalBuildToolsVersion
 
     defaultConfig {
-        minSdkVersion project.ext.globalMinSdkVersion
-        targetSdkVersion project.ext.globalTargetSdkVersion
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        //modify to refer to root build.gradle that refer to a global properties file
+        //minSdkVersion project.ext.globalMinSdkVersion
+        //targetSdkVersion project.ext.globalTargetSdkVersion
         versionCode myVersionCode
         versionName myVersionName
     }
@@ -50,8 +56,10 @@ dependencies {
     repositories {
         jcenter()
     }
-    compile "com.android.support:support-annotations:${supportLibVersion}"
-    compile "com.jakewharton.timber:timber:${timberVersion}"
+    compile "com.android.support:support-annotations:${SUPPORT_LIB_VERSION}"
+    //compile "com.android.support:support-annotations:${supportLibVersion}"
+    compile "com.jakewharton.timber:timber:${TIMBER_VERSION}"
+    //compile "com.jakewharton.timber:timber:${timberVersion}""
 
     // Espresso
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.0')
