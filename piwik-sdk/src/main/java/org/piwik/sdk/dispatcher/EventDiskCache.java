@@ -31,7 +31,7 @@ public class EventDiskCache {
     private final File mCacheDir;
 
     public EventDiskCache(Tracker tracker) {
-        File baseDir = new File(tracker.getPiwik().getContext().getCacheDir(), CACHE_DIR_NAME);
+        File baseDir = new File(tracker.getPiwik().getContext().getExternalCacheDir(), CACHE_DIR_NAME);
         mCacheDir = new File(baseDir, tracker.getAPIUrl().getHost());
         File[] storedContainers = mCacheDir.listFiles();
         if (storedContainers != null) {
