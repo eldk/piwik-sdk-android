@@ -94,7 +94,8 @@ public class EventDiskCache {
                 long timestamp = Long.parseLong(timestampLine);
                 // after 4 hours it needs an authtoken, which is not encouraged
                 // https://developer.piwik.org/api-reference/tracking-api
-                if (System.currentTimeMillis() - timestamp > 4 * 60 * 60 * 1000) {
+		// eldk : modified to 24 according to this : https://github.com/piwik/piwik-sdk-android/issues/139
+                if (System.currentTimeMillis() - timestamp > 24 * 60 * 60 * 1000) {
                     return events;
                 }
             } catch (NumberFormatException e) {
