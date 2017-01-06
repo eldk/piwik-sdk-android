@@ -230,6 +230,18 @@ public class Tracker {
     }
 
     /**
+     Packets are collected and dispatched in batches. This boolean sets if post must be
+     * done when app user is connected to WIFI only. If delay to next WIFI
+     * connection is > 24h00 and/or cache size is granted data may be loose.
+     *
+     * @param dispatchWIFIOnly boolean
+     */
+    public Tracker setDispatchWIFIOnly(boolean dispatchWIFIOnly) {
+        mDispatcher.setDispatchWIFIOnly(dispatchWIFIOnly);
+        return this;
+    }
+
+    /**
      * @return in milliseconds
      */
     public long getDispatchInterval() {

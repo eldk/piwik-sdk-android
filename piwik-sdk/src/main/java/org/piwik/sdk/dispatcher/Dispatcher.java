@@ -54,6 +54,7 @@ public class Dispatcher {
     public static final long DEFAULT_DISPATCH_INTERVAL = 120 * 1000; // 120s
     private volatile long mDispatchInterval = DEFAULT_DISPATCH_INTERVAL;
     private boolean mDispatchGzipped = false;
+    private boolean mDispatchWIFIOnly = false;
     private final PacketFactory packetFactory;
 
     public Dispatcher(Tracker tracker, EventCache eventCache) {
@@ -108,6 +109,21 @@ public class Dispatcher {
 
     public boolean getDispatchGzipped() {
         return mDispatchGzipped;
+    }
+
+    /**
+     * Packets are collected and dispatched in batches. This boolean sets if post must be
+     * done when app user is connected to WIFI only. If delay to next WIFI
+     * connection is > 24h00 and/or cache size is granted data may be loose.
+     *
+     * @param dispatchWIFIOnly boolean
+     */
+    public void setDispatchWIFIOnly(boolean dispatchWIFIOnly) {
+        mDispatchWIFIOnly = dispatchWIFIOnly;
+    }
+
+    public boolean getDispatchWIFIOnly() {
+        return mDispatchWIFIOnly;
     }
 
     private boolean launch() {
@@ -183,7 +199,22 @@ public class Dispatcher {
 
     private boolean isConnected() {
         NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
-        return activeNetwork != null && activeNetwork.isConnected();
+        if (activeNetwork != null) {
+
+            if (mDispatchWIFIOnly) {
+                return isWIFI(activeNetwork) && activeNetwork.isConnected();
+            }
+            else return activeNetwork != null && activeNetwork.isConnected();
+
+        }
+        return false;
+    }
+
+    private boolean isWIFI(NetworkInfo activeNetwork) {
+        if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
+            return true;
+        }
+        else return false;
     }
 
     /**
