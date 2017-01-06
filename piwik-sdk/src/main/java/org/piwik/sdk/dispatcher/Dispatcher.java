@@ -200,12 +200,10 @@ public class Dispatcher {
     private boolean isConnected() {
         NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
         if (activeNetwork != null) {
-
             if (mDispatchWIFIOnly) {
                 return isWIFI(activeNetwork) && activeNetwork.isConnected();
             }
             else return activeNetwork != null && activeNetwork.isConnected();
-
         }
         return false;
     }
@@ -214,7 +212,8 @@ public class Dispatcher {
         if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
             return true;
         }
-        else return false;
+        else
+            return false;
     }
 
     /**
