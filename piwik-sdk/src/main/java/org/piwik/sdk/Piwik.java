@@ -18,8 +18,10 @@ public class Piwik {
     public static final String LOGGER_PREFIX = "PIWIK:";
     public static final String PREFERENCE_FILE_NAME = "org.piwik.sdk";
     public static final String PREFERENCE_KEY_OPTOUT = "piwik.optout";
+    public static final String PREFERENCE_KEY_WIFIONLY = "piwik.wifionly";
     private final Context mContext;
     private boolean mOptOut = false;
+    private boolean mWIFIOnly = false;
     private boolean mDryRun = false;
 
     private static Piwik sInstance;
@@ -35,6 +37,7 @@ public class Piwik {
         mContext = context.getApplicationContext();
         mSharedPreferences = getContext().getSharedPreferences(PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
         mOptOut = getSharedPreferences().getBoolean(PREFERENCE_KEY_OPTOUT, false);
+        mWIFIOnly = getSharedPreferences().getBoolean(PREFERENCE_KEY_WIFIONLY, false);
     }
 
     public Context getContext() {
@@ -81,6 +84,25 @@ public class Piwik {
      */
     public boolean isOptOut() {
         return mOptOut;
+    }
+
+    /**
+     * Use this to enable WIFI only dispatch, e.g. if the user choose to send data when connected to WIFI.
+     * Piwik will persist the choice and use WIFI to dispatch on next instance creation.<p>
+     * The choice is stored in {@link #PREFERENCE_FILE_NAME} under the key {@link #PREFERENCE_KEY_WIFIONLY}.
+     *
+     * @param WIFIOnly true to enable WIFI dispatch only
+     */
+    public void setWIFIOnly(boolean WIFIOnly) {
+        mWIFIOnly = WIFIOnly;
+        getSharedPreferences().edit().putBoolean(PREFERENCE_KEY_WIFIONLY, WIFIOnly).apply();
+    }
+
+    /**
+     * @return true if Piwik is currently disabled
+     */
+    public boolean isWIFIOnly() {
+        return mWIFIOnly;
     }
 
     public boolean isDryRun() {
